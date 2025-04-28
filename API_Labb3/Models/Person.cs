@@ -4,6 +4,7 @@ namespace API_Labb3.Models
 {
     public class Person
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public string Firstname { get; set; } = string.Empty;
@@ -12,10 +13,10 @@ namespace API_Labb3.Models
         public int Phone { get; set; }
 
         //Foreign key
-        public int InterestID { get; set; }
+        //public int IntrestID { get; set; }
 
         //Navigation
-        public ICollection<PersonIntereset>? PersonInterests { get; set; }
+        public ICollection<PersonIntreset>? PersonIntrests { get; set; }
 
     }
 }
