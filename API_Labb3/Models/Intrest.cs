@@ -2,7 +2,7 @@
 
 namespace API_Labb3.Models
 {
-    public class Interest
+    public class Intrest
     {
         public int Id { get; set; }
         [Required]
@@ -12,11 +12,9 @@ namespace API_Labb3.Models
         public string? Description { get; set; }
 
         //Foreign key
-        public int PersonID { get; set; }
+        //public int PersonID { get; set; }
 
         //Navigation 
-        public ICollection<PersonIntereset>? PersonInterests { get; set; }
-
-
+        public ICollection<PersonIntreset>? PersonIntrests { get; set; }
     }
 }
