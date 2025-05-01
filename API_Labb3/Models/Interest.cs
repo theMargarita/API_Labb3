@@ -2,7 +2,7 @@
 
 namespace API_Labb3.Models
 {
-    public class Intrest
+    public class Interest
     {
         public int Id { get; set; }
         [Required]
@@ -15,6 +15,6 @@ namespace API_Labb3.Models
         //public int PersonID { get; set; }
 
         //Navigation 
-        public ICollection<PersonIntreset>? PersonIntrests { get; set; }
+        public ICollection<PersonInterest>? PersonInterests { get; set; }
     }
 }

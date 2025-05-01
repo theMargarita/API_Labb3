@@ -16,7 +16,7 @@ namespace API_Labb3.Models
         //public int IntrestID { get; set; }
 
         //Navigation
-        public ICollection<PersonIntreset>? PersonIntrests { get; set; }
+        public ICollection<PersonInterest>? PersonInterests { get; set; }
 
     }
 }
