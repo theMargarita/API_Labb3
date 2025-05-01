@@ -2,13 +2,16 @@
 
 namespace API_Labb3.Models
 {
-    public class PersonIntreset
+    public class PersonInterest
     {
+        [Key]
+        public int Id { get; set; }
+
         public int PersonID { get; set; }
         public Person Persons { get; set; } = null!;
 
         public int InterestID { get; set; }
-        public Intrest Intrests { get; set; } = null!;
+        public Interest Interests { get; set; } = null!;
 
 
         //Reference navigation property and fro the other obove 

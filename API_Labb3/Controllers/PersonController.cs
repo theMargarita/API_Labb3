@@ -10,28 +10,30 @@ namespace API_Labb3.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
-        private readonly PiDbContext _context;
+        private readonly PersonInterestDbContext _context;
 
-        public PersonController(PiDbContext context)
+        public PersonController(PersonInterestDbContext context)
         {
             _context = context;
         }
 
-        //to be able to get all the people in person
+        // get all the people in person
         [HttpGet (Name = "GetPerson")]
         public async Task<ActionResult<ICollection<Person>>> GetPerson()
         {
-            return Ok(await _context.Persons.ToListAsync());
+            //if I want more 
+            return Ok(await _context.Persons.Select(p => new {p.Firstname, p.Lastname, p.Age, p.Phone, p.PersonInterests}).ToListAsync());
+            //return Ok(await _context.Persons.ToListAsync());
         }
 
-        //to be able to seach by their id
-        [HttpGet (Name = "GetPersonById")]
+        //search by their id (dont forget the {id}, so controller understand which id which 
+        [HttpGet ("{id}", Name = "GetPersonById")]
         public async Task<ActionResult<ICollection<Person>>> GetPersonById(int id)
         {
             return Ok(await _context.Persons.FindAsync(id));
         }
 
-        //to be able to create a new person 
+        // create a new person 
         [HttpPost(Name = "CreatePerson")]
         public async Task<IActionResult> CreatePerson(Person newPerson)
         {
