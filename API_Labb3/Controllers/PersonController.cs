@@ -1,5 +1,6 @@
 ﻿using API_Labb3.Data;
 using API_Labb3.Models;
+using API_Labb3.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,18 +19,37 @@ namespace API_Labb3.Controllers
         }
 
         // get all the people in person
-        [HttpGet (Name = "GetPerson")]
-        public async Task<ActionResult<ICollection<Person>>> GetPerson()
+        [HttpGet(Name = "GetPerson")]
+        public async Task<ActionResult<ICollection<CreatePersonDTO>>> GetPerson()
         {
-            //if I want more 
-            return Ok(await _context.Persons.Select(p => new {p.Firstname, p.Lastname, p.Age, p.Phone, p.PersonInterests}).ToListAsync());
+            return Ok(await _context.Persons
+                .Select(p => new
+                {
+                    p.Firstname,
+                    p.Lastname,
+                    p.Age,
+                    p.Phone
+                }).ToListAsync());
+
             //return Ok(await _context.Persons.ToListAsync());
         }
 
+
         //search by their id (dont forget the {id}, so controller understand which id which 
-        [HttpGet ("{id}", Name = "GetPersonById")]
-        public async Task<ActionResult<ICollection<Person>>> GetPersonById(int id)
+        [HttpGet("{id}", Name = "GetPersonById")]
+        public async Task<ActionResult<ICollection<GetPersonInterestDTO>>> GetPersonById(int id)
         {
+            var person = await _context.Persons
+                .Where(p => p.Id == id)
+                .Select(P => new GetPersonInterestDTO
+                {
+                    FirstName = P.Firstname,
+                    LastName = p.LastName,
+                    //Interests = new InterestDTO { Title = P.}
+
+                }).FirstOrDefaultAsync();
+
+
             return Ok(await _context.Persons.FindAsync(id));
         }
 
@@ -37,7 +57,7 @@ namespace API_Labb3.Controllers
         [HttpPost(Name = "CreatePerson")]
         public async Task<IActionResult> CreatePerson(Person newPerson)
         {
-            if(newPerson == null)
+            if (newPerson == null)
             {
                 return BadRequest(new { errorMessage = "Data is missing" });
             }
@@ -50,7 +70,9 @@ namespace API_Labb3.Controllers
                 Phone = newPerson.Phone
             };
 
-            await _context.AddAsync(personToAdd);
+             _context.AddAsync(personToAdd);
+            await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(GetPersonById), new { id = personToAdd.Id }, personToAdd);
         }
 

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Labb3.Migrations
 {
     [DbContext(typeof(PersonInterestDbContext))]
-    [Migration("20250430105628_init")]
-    partial class init
+    [Migration("20250502091821_inint3.0")]
+    partial class inint30
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace API_Labb3.Migrations
                         new
                         {
                             Id = 3,
-                            Description = "Both computer and vidio games",
+                            Description = "Both computer and video games",
                             Title = "Gaming"
                         },
                         new
@@ -98,7 +98,10 @@ namespace API_Labb3.Migrations
             modelBuilder.Entity("API_Labb3.Models.Link", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PersonInterestId")
                         .HasColumnType("int");
@@ -109,25 +112,27 @@ namespace API_Labb3.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PersonInterestId");
+
                     b.ToTable("Links");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            PersonInterestId = 0,
+                            PersonInterestId = 2,
                             URL = "www.google.se"
                         },
                         new
                         {
                             Id = 2,
-                            PersonInterestId = 0,
+                            PersonInterestId = 4,
                             URL = "www.medium.com"
                         },
                         new
                         {
                             Id = 3,
-                            PersonInterestId = 0,
+                            PersonInterestId = 2,
                             URL = "www.youtube.com"
                         },
                         new
@@ -139,7 +144,7 @@ namespace API_Labb3.Migrations
                         new
                         {
                             Id = 5,
-                            PersonInterestId = 0,
+                            PersonInterestId = 3,
                             URL = "www.chess.com"
                         });
                 });
@@ -271,7 +276,7 @@ namespace API_Labb3.Migrations
                 {
                     b.HasOne("API_Labb3.Models.PersonInterest", "PersonInterests")
                         .WithMany("Links")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("PersonInterestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

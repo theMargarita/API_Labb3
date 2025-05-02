@@ -1,5 +1,6 @@
 ﻿using API_Labb3.Data;
 using API_Labb3.Models;
+using API_Labb3.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,21 +35,25 @@ namespace API_Labb3.Controllers
 
         //create new interest
         [HttpPost (Name = "CreateInterest")]
-        public async Task<ActionResult<Interest>> CreateInterest(Interest createInterest, int id)
+        public async Task<ActionResult<InterestDTO>> CreateInterest(Interest createInterest)
         {
+            //var personInterest = new List<PersonInterest>();
+
             if(createInterest == null)
             {
                 return BadRequest(new {errorMessage = "Invalid or empty request" });
             }
 
-            var addCreateInterest = new Interest()
+            var addCreateInterest = _context.Interests.Select(i => new InterestDTO
             {
-                Title = createInterest.Title,
-                Description = createInterest.Description
-            };
+                Title = i.Title,
+                Description = i.Description,
+                //PersonInterests = personInterest
+            }).ToListAsync();
 
-            await _context.AddAsync(addCreateInterest);
-            return addCreateInterest;
+             _context.AddAsync(addCreateInterest);
+            await _context.SaveChangesAsync();
+            return Ok(addCreateInterest);
         }
         
     }
