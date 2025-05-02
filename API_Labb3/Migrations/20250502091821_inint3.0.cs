@@ -7,7 +7,7 @@
 namespace API_Labb3.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class inint30 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,8 @@ namespace API_Labb3.Migrations
                 name: "Links",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     URL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonInterestId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -80,8 +81,8 @@ namespace API_Labb3.Migrations
                 {
                     table.PrimaryKey("PK_Links", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Links_PersonInterests_Id",
-                        column: x => x.Id,
+                        name: "FK_Links_PersonInterests_PersonInterestId",
+                        column: x => x.PersonInterestId,
                         principalTable: "PersonInterests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -94,7 +95,7 @@ namespace API_Labb3.Migrations
                 {
                     { 1, null, "Volleyball" },
                     { 2, "Taking pictures with either an old or a new camera", "Photograph" },
-                    { 3, "Both computer and vidio games", "Gaming" },
+                    { 3, "Both computer and video games", "Gaming" },
                     { 4, "Back and white peices", "Chess" },
                     { 5, "All kind of programming", "Programming" },
                     { 6, "Specificly with oilpaint", "Painting" },
@@ -131,12 +132,17 @@ namespace API_Labb3.Migrations
                 columns: new[] { "Id", "PersonInterestId", "URL" },
                 values: new object[,]
                 {
-                    { 1, 0, "www.google.se" },
-                    { 2, 0, "www.medium.com" },
-                    { 3, 0, "www.youtube.com" },
+                    { 1, 2, "www.google.se" },
+                    { 2, 4, "www.medium.com" },
+                    { 3, 2, "www.youtube.com" },
                     { 4, 1, "www.trail.com" },
-                    { 5, 0, "www.chess.com" }
+                    { 5, 3, "www.chess.com" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Links_PersonInterestId",
+                table: "Links",
+                column: "PersonInterestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonInterests_InterestID",

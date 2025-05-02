@@ -11,9 +11,6 @@ namespace API_Labb3.Models
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        //Foreign key
-        //public int PersonID { get; set; }
-
         //Navigation 
         public ICollection<PersonInterest>? PersonInterests { get; set; }
     }

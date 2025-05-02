@@ -29,22 +29,22 @@ namespace API_Labb3.Data
             //    .HasKey(pi => new { pi.PersonID, pi.InterestID });
 
             //for person connection
-            modelBuilder.Entity<PersonInterest>()
-                .HasOne(pi => pi.Persons) //pi has one person
-                .WithMany(p => p.PersonInterests) //p has mnay personintrest
-                .HasForeignKey(pi => pi.PersonID); //and pi only has one foreign personID
+            //modelBuilder.Entity<PersonInterest>()
+            //    .HasOne(pi => pi.Persons) //pi has one person
+            //    .WithMany(p => p.PersonInterests) //p has mnay personintrest
+            //    .HasForeignKey(pi => pi.PersonID); //and pi only has one foreign personID
 
             //for intrest connection 
-            modelBuilder.Entity<PersonInterest>()
-               .HasOne(pi => pi.Interests) //pi has one intrest
-               .WithMany(i => i.PersonInterests) //p has mnay personintrest
-               .HasForeignKey(pi => pi.InterestID); //and pi only has one foreign intrestID
+            //modelBuilder.Entity<PersonInterest>()
+            //   .HasOne(pi => pi.Interests) //pi has one intrest
+            //   .WithMany(i => i.PersonInterests) //p has mnay personintrest
+            //   .HasForeignKey(pi => pi.InterestID); //and pi only has one foreign intrestID
 
-            //for link connection
-            modelBuilder.Entity<Link>()
-                .HasOne(l => l.PersonInterests)
-                .WithMany(pi => pi.Links)
-                .HasForeignKey(l => l.Id); //fk from personInterest to link so it will not have a dubbeldata 
+            ////for link connection
+            //modelBuilder.Entity<Link>()
+            //    .HasOne(l => l.PersonInterests)
+            //    .WithMany(pi => pi.Links)
+            //    .HasForeignKey(l => l.Id); //fk from personInterest to link so it will not have a dubbeldata 
 
             SeedData(modelBuilder);
         }
@@ -64,7 +64,7 @@ namespace API_Labb3.Data
                 .HasData(
                 new Interest { Id = 1, Title = "Volleyball" },
                 new Interest { Id = 2, Title = "Photograph", Description = "Taking pictures with either an old or a new camera" },
-                new Interest { Id = 3, Title = "Gaming", Description = "Both computer and vidio games" },
+                new Interest { Id = 3, Title = "Gaming", Description = "Both computer and video games" },
                 new Interest { Id = 4, Title = "Chess", Description = "Back and white peices" },
                 new Interest { Id = 5, Title = "Programming", Description = "All kind of programming" },
                 new Interest { Id = 6, Title = "Painting", Description = "Specificly with oilpaint" },
@@ -84,11 +84,11 @@ namespace API_Labb3.Data
 
             modelBuilder.Entity<Link>()
                 .HasData(
-                new Link { Id = 1, URL = "www.google.se" },
-                new Link { Id = 2, URL = "www.medium.com" },
-                new Link { Id = 3, URL = "www.youtube.com" },
+                new Link { Id = 1, URL = "www.google.se", PersonInterestId = 2 },
+                new Link { Id = 2, URL = "www.medium.com", PersonInterestId = 4 },
+                new Link { Id = 3, URL = "www.youtube.com", PersonInterestId = 2 },
                 new Link { Id = 4, URL = "www.trail.com", PersonInterestId = 1},
-                new Link { Id = 5, URL = "www.chess.com"}
+                new Link { Id = 5, URL = "www.chess.com", PersonInterestId = 3}
                 );
         }
     }

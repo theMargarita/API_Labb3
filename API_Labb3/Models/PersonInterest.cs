@@ -14,7 +14,7 @@ namespace API_Labb3.Models
         public Interest Interests { get; set; } = null!;
 
 
-        //Reference navigation property and fro the other obove 
+        //Reference navigation property and for the other obove 
         public ICollection<Link>? Links { get; set; }
 
     }
