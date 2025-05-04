@@ -2,7 +2,7 @@
 
 namespace API_Labb3.Models.DTOs
 {
-    public class CreateLinkDTO
+    public class LinkRequest
     {
         public int PersonInterestId { get; set; }
 
@@ -10,6 +10,6 @@ namespace API_Labb3.Models.DTOs
         public string? URL { get; set; }
 
         //navigation prop
-        public PersonInterest? PersonInterest { get; set; } 
+        public PersonInterest? PersonInterest { get; set; }
     }
 }

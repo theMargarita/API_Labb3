@@ -1,9 +1,11 @@
 ﻿using API_Labb3.Data;
 using API_Labb3.Models;
 using API_Labb3.Models.DTOs;
+using API_Labb3.Respetories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace API_Labb3.Controllers
 {
@@ -20,8 +22,9 @@ namespace API_Labb3.Controllers
 
         // get all the people in person
         [HttpGet(Name = "GetPerson")]
-        public async Task<ActionResult<ICollection<CreatePersonDTO>>> GetPerson()
+        public async Task<ActionResult<ICollection<PersonDTO>>> GetPerson()
         {
+            //return Ok( await _context.GetAll());
             return Ok(await _context.Persons
                 .Select(p => new
                 {
@@ -36,53 +39,46 @@ namespace API_Labb3.Controllers
 
 
         //search by their id (dont forget the {id}, so controller understand which id which 
-        [HttpGet("{id}", Name = "GetPersonById")]
-        public async Task<ActionResult<ICollection<GetPersonInterestDTO>>> GetPersonById(int id)
+        [HttpGet("{id}/interest", Name = "GetPersonById")]
+        public async Task<ActionResult<GetPersonInterestDTO>> GetPersonById(int id)
         {
             var person = await _context.Persons
+                .Include(p => p.PersonInterests)
+                .ThenInclude(pi => pi.Interests)
                 .Where(p => p.Id == id)
-                .Select(P => new GetPersonInterestDTO
+                .Select(p => new GetPersonInterestDTO
                 {
-                    FirstName = P.Firstname,
-                    LastName = p.LastName,
-                    //Interests = new InterestDTO { Title = P.}
+                    FirstName = p.Firstname,
+                    LastName = p.Lastname,
+                    Interests = p.PersonInterests.Select(pi => new InterestDTO
+                    {
+                        Title = pi.Interests.Title,
+                        Description = pi.Interests.Description
+                    }).ToList()
 
                 }).FirstOrDefaultAsync();
 
-
-            return Ok(await _context.Persons.FindAsync(id));
-        }
-
-        // create a new person 
-        [HttpPost(Name = "CreatePerson")]
-        public async Task<IActionResult> CreatePerson(Person newPerson)
-        {
-            if (newPerson == null)
+            if (person == null)
             {
-                return BadRequest(new { errorMessage = "Data is missing" });
+                return NotFound(new { errorMessage = "Person not found" });
             }
 
-            var personToAdd = new Person()
-            {
-                Firstname = newPerson.Firstname,
-                Lastname = newPerson.Lastname,
-                Age = newPerson.Age,
-                Phone = newPerson.Phone
-            };
-
-             _context.AddAsync(personToAdd);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPersonById), new { id = personToAdd.Id }, personToAdd);
+            return Ok(person);
         }
 
-        //update part
-        //[HttpPut(Name = "UpdatePerson")]
-        //public async Task<IActionResult> UpdatePerson(int id, Person updatePerson)
-        //{
-        //    //var personToUpdate = await _context.Update(id);
+        [HttpGet ("{id}/link", Name = "GetPersonWithLinksById")]
+        public async Task<ActionResult<GetPersonInterestDTO>>GetPersonWithLinksById(int id)
+        {
+            var person = await _context.Persons
+                .Include(p => p.PersonInterests)
+                .ThenInclude(pi => pi.Links)
+                .Where(p => p.Id == id)
+                .Select(p => new 
+            {
+                
+            }).ToListAsync();
 
-        //    if ()
-        //}
+            return Ok();
+        }
     }
 }
