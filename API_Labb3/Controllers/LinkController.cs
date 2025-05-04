@@ -1,5 +1,6 @@
 ﻿using API_Labb3.Data;
 using API_Labb3.Models;
+using API_Labb3.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +18,24 @@ namespace API_Labb3.Controllers
             _context = context;
         }
 
-        [HttpGet (Name = "GetLinks")]
-        public async Task<ActionResult<ICollection<Link>>> GetLinks()
+        [HttpGet("{id}/person", Name = "GetLinkById")]
+        public async Task<ActionResult<GetPersonInterestDTO>> GetLinkById(int id)
         {
-            return Ok(await _context.Links.ToListAsync());
-        }
+            var linkToPerson = await _context.PersonInterests
+                .Where(pi => pi.Id == id)
+                .Select(pi => new GetPersonInterestDTO
+                {
+                    FirstName = pi.Persons.Firstname,
+                    LastName = pi.Persons.Firstname,
+                    LinkPerson = pi.Links.Select(l => new LinkDTO
+                    {
+                        URL = l.URL
+                    }).ToList()
 
-        [HttpGet("{id}", Name = "GetLinkById")]
-        public async Task<ActionResult<Link>> GetLinkById(int id)
-        {
-            return Ok(await _context.Links.FindAsync(id));
+                }).FirstOrDefaultAsync();
+
+
+            return Ok(linkToPerson);
 
         }
 
