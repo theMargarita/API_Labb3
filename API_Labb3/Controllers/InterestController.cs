@@ -1,7 +1,6 @@
 ﻿using API_Labb3.Data;
 using API_Labb3.Models;
 using API_Labb3.Models.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -64,19 +63,19 @@ namespace API_Labb3.Controllers
             var personInterest = await _context.PersonInterests
                 .FirstOrDefaultAsync(pi => pi.PersonID == id && pi.InterestID == interest.Id);
 
+            //and if null
             if (personInterest != null)
             {
-                return BadRequest(new { errorMessage = "Something is not right" });
+                return BadRequest(new { errorMessage = "Person already have this interest" });
             }
 
-            //add new / 
+            //add new
             personInterest = new PersonInterest
             {
                 InterestID = interest.Id,
                 PersonID = id
             };
 
-            //await _context.AddAsync(new {personInterest, interest});
             await _context.PersonInterests.AddAsync(personInterest);
             await _context.SaveChangesAsync();
 

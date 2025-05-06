@@ -1,11 +1,8 @@
 ﻿using API_Labb3.Data;
 using API_Labb3.Models;
 using API_Labb3.Models.DTOs;
-using API_Labb3.Respetories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace API_Labb3.Controllers
 {
@@ -66,19 +63,37 @@ namespace API_Labb3.Controllers
             return Ok(person);
         }
 
-        [HttpGet ("{id}/link", Name = "GetPersonWithLinksById")]
-        public async Task<ActionResult<GetPersonInterestDTO>>GetPersonWithLinksById(int id)
-        {
-            var person = await _context.Persons
-                .Include(p => p.PersonInterests)
-                .ThenInclude(pi => pi.Links)
-                .Where(p => p.Id == id)
-                .Select(p => new 
-            {
-                
-            }).ToListAsync();
 
-            return Ok();
+
+        [HttpPost("{personId}/{interestId}/link/", Name = "CreateLinkToPersonInterest")]
+        public async Task<ActionResult<GetPersonInterestDTO>> AddLinkToPersonInterest(int personId, int interestId, LinkDTO linkDTO)
+        {
+            //checks if the person exists
+            var person = await _context.Persons.FindAsync(personId);
+            if(person == null)
+            {
+                return NotFound(new { errorMessage = $"Person with id: {personId} not found" });
+            }
+
+            //checks if person has this interest
+            var personInterest = await _context.PersonInterests
+             .FirstOrDefaultAsync(pi => pi.PersonID == personId && pi.InterestID == interestId);
+
+            if(personInterest == null)
+            {
+                //maybe is just enough with personId variable
+                return NotFound(new { errorMessage = $"Interest is not found for person with id: {personInterest.PersonID}" });
+            }
+
+            var link = new Link
+            {
+                URL = linkDTO.URL,
+                PersonInterestId = personInterest.Id
+            };
+            await _context.AddAsync(link);
+            await _context.SaveChangesAsync();
+
+            return Ok(link);
         }
     }
 }
