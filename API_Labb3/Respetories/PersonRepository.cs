@@ -29,14 +29,15 @@ namespace API_Labb3.Respetories
             return await _context.Persons.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Interest>> GetPersonInterest(int id)
+        public async Task<ICollection<Interest>> GetPersonInterest(int id)
         {
             var personInterests = await _context.PersonInterests
-                .Where(pi => pi.Id == id)
+                .Where(pi => pi.Id == id).Include(p => p.Persons)
                 .Select(pi => new Interest
                 {
                     Title = pi.Interests.Title,
-                    Description = pi.Interests.Description
+                    Description = pi.Interests.Description,
+                  
                 }).ToListAsync();
 
             return personInterests;
