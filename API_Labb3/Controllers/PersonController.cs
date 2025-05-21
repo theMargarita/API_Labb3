@@ -35,25 +35,17 @@ namespace API_Labb3.Controllers
         }
 
 
-        //search by their id (dont forget the {id}, so controller understand which id which 
-        [HttpGet("{id}/interest", Name = "GetPersonAndInterestsById")]
-        public async Task<ActionResult<GetPersonInterestDTO>> GetPersonAndInterestsById(int id)
+        [HttpGet("{personId}/", Name = "GetPersonAndInterestsById")]
+        public async Task<ActionResult<GetPersonInterestDTO>> GetPersonAndInterestsById(int personId)
         {
             var person = await _context.PersonInterests
-                //.Include(p => p.PersonInterests)
-                //.Include(pi => pi.Interests)
-                .Where(p => p.Id == id)
+                .Where(p => p.Persons.Id == personId)
                 .Select(p => new GetPersonInterestDTO
                 {
                     FirstName = p.Persons.Firstname,
                     LastName = p.Persons.Lastname,
                     Title = p.Interests.Title,
                     Description = p.Interests.Description
-                    //URL = p.Links.Select(u => new LinkDTO
-                    //{
-                    //    URL = u.URL
-                    //}).ToList()
-
                 }).ToListAsync();
 
             if (person == null)
@@ -73,7 +65,7 @@ namespace API_Labb3.Controllers
             var person = await _context.Persons.FindAsync(personId);
             if(person == null)
             {
-                return NotFound(new { errorMessage = $"Person with id: {personId} not found" });
+                return NotFound(new { errorMessage = $"Person with personId: {personId} not found" });
             }
 
             //checks if person has this interest
@@ -83,7 +75,7 @@ namespace API_Labb3.Controllers
             if(personInterest == null)
             {
                 //maybe is just enough with personId variable
-                return NotFound(new { errorMessage = $"Interest is not found for this person with id: {personId}" });
+                return NotFound(new { errorMessage = $"Interest is not found for this person with personId: {personId}" });
             }
 
             var link = new Link
