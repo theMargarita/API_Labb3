@@ -25,6 +25,7 @@ namespace API_Labb3.Controllers
         //    //return Ok(await _context.Links.ToListAsync());
         //}
 
+
         //search by id - repository pattern
         [HttpGet("{id}", Name = "GetInterestById")]
         public async Task<ActionResult<ICollection<Interest>>> GetInterestById(int id)
@@ -34,53 +35,58 @@ namespace API_Labb3.Controllers
 
 
         //create new interest
-        [HttpPost(Name = "CreateInterest")]
-        public async Task<ActionResult> InterestToPerson(InterestRequest createInterest, int id)
-        {
-            var person = await _context.Persons.FindAsync(id);
-            if (person == null)
-            {
-                return BadRequest(new { errorMessage = $"could not find the person by id: {person}" });
-            }
+        //[HttpPost("{id}", Name = "CreateInterest")]
+        //public async Task<ActionResult> InterestToPerson(InterestRequest createInterest, int id)
+        //{
+        //    var person = await _context.Persons.FindAsync(id);
+        //    if (person == null)
+        //    {
+        //        return BadRequest(new { errorMessage = $"could not find the person by id: {person}" });
+        //    }
 
-            var interest = await _context.Interests
-                .FirstOrDefaultAsync(i => i.Title == createInterest.Title);
+        //    var interest = await _context.Interests
+        //        .FirstOrDefaultAsync(i => i.Title == createInterest.Title);
 
-            //creates new interest if interest is null/non existent
-            if (interest == null)
-            {
-                interest = new Interest
-                {
-                    Title = createInterest.Title,
-                    Description = createInterest.Description,
-                };
+        //    //creates new interest if interest is null/non existent
+        //    if (interest == null)
+        //    {
+        //        interest = new Interest
+        //        {
+        //            Title = createInterest.Title,
+        //            Description = createInterest.Description,
 
-                await _context.AddAsync(interest);
-                await _context.SaveChangesAsync();
-            }
+        //        };
 
-            //to check if the interest and  person exists
-            var personInterest = await _context.PersonInterests
-                .FirstOrDefaultAsync(pi => pi.PersonID == id && pi.InterestID == interest.Id);
+        //        await _context.AddAsync(interest);
+        //        await _context.SaveChangesAsync();
+        //    }
 
-            //and if null
-            if (personInterest != null)
-            {
-                return BadRequest(new { errorMessage = "Person already have this interest" });
-            }
+        //    //to check if the interest and  person exists
+        //    var personInterest = await _context.PersonInterests.Where(pi => pi.Id == id).Select(pi => new PersonInterest
+        //    {
+        //        InterestID = interest.Id,
+        //        PersonID = id
 
-            //add new
-            personInterest = new PersonInterest
-            {
-                InterestID = interest.Id,
-                PersonID = id
-            };
+        //    });
 
-            await _context.PersonInterests.AddAsync(personInterest);
-            await _context.SaveChangesAsync();
+        //    //and if null
+        //    if (personInterest != null)
+        //    {
+        //        return BadRequest(new { errorMessage = "Person already have this interest" });
+        //    }
 
-            return CreatedAtAction(nameof(GetInterestById), new { id = person.Id }, new { personInterest, interest });
-        }
+        //    //add new
+        //    personInterest = new PersonInterest
+        //    {
+        //        InterestID = interest.Id,
+        //        PersonID = id
+        //    };
+
+        //    await _context.PersonInterests.AddAsync(personInterest);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction(nameof(GetInterestById), new { id = person.Id }, new { personInterest, interest });
+        //}
 
     }
 }
