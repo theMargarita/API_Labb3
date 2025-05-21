@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API_Labb3.Models
 {
     public class PersonInterest
     {
-        [Key]
+        //[Key]
         public int Id { get; set; }
 
         public int PersonID { get; set; }
@@ -15,6 +16,8 @@ namespace API_Labb3.Models
 
 
         //Reference navigation property and for the other obove 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+
         public ICollection<Link>? Links { get; set; }
 
     }
