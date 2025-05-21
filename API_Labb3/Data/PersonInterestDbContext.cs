@@ -78,7 +78,12 @@ namespace API_Labb3.Data
                 new PersonInterest { Id = 2, PersonID = 1, InterestID = 3},
                 new PersonInterest { Id = 3, PersonID = 1, InterestID = 5},
                 new PersonInterest { Id = 4, PersonID = 2, InterestID = 8},
-                new PersonInterest { Id = 5, PersonID = 2, InterestID = 7}
+                new PersonInterest { Id = 5, PersonID = 2, InterestID = 1 },
+                new PersonInterest { Id = 6, PersonID = 3, InterestID = 3 },
+                new PersonInterest { Id = 7, PersonID = 4, InterestID = 2 },
+                new PersonInterest { Id = 8, PersonID = 3, InterestID = 4 },
+                new PersonInterest { Id = 9, PersonID = 5, InterestID = 6 },
+                new PersonInterest { Id = 10, PersonID = 5, InterestID = 7 }
                 );
 
 
@@ -88,7 +93,11 @@ namespace API_Labb3.Data
                 new Link { Id = 2, URL = "www.medium.com", PersonInterestId = 4 },
                 new Link { Id = 3, URL = "www.youtube.com", PersonInterestId = 2 },
                 new Link { Id = 4, URL = "www.trail.com", PersonInterestId = 1},
-                new Link { Id = 5, URL = "www.chess.com", PersonInterestId = 3}
+                new Link { Id = 5, URL = "www.chess.com", PersonInterestId = 3 },
+                new Link { Id = 6, URL = "www.spela.com", PersonInterestId = 5 },
+                new Link { Id = 7, URL = "www.blocket.com", PersonInterestId = 1 },
+                new Link { Id = 8, URL = "www.aftonbladet.se", PersonInterestId = 3 }
+
                 );
         }
     }
