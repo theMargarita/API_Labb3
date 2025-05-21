@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Labb3.Migrations
 {
     [DbContext(typeof(PersonInterestDbContext))]
-    [Migration("20250502091821_inint3.0")]
-    partial class inint30
+    [Migration("20250516204137_init1.0")]
+    partial class init10
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,6 +146,24 @@ namespace API_Labb3.Migrations
                             Id = 5,
                             PersonInterestId = 3,
                             URL = "www.chess.com"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            PersonInterestId = 5,
+                            URL = "www.spela.com"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            PersonInterestId = 1,
+                            URL = "www.blocket.com"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            PersonInterestId = 3,
+                            URL = "www.aftonbladet.se"
                         });
                 });
 
@@ -267,8 +285,38 @@ namespace API_Labb3.Migrations
                         new
                         {
                             Id = 5,
-                            InterestID = 7,
+                            InterestID = 1,
                             PersonID = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            InterestID = 3,
+                            PersonID = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            InterestID = 2,
+                            PersonID = 4
+                        },
+                        new
+                        {
+                            Id = 8,
+                            InterestID = 4,
+                            PersonID = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            InterestID = 6,
+                            PersonID = 5
+                        },
+                        new
+                        {
+                            Id = 10,
+                            InterestID = 7,
+                            PersonID = 5
                         });
                 });
 

@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API_Labb3.Models
 {
     public class Person
     {
-        [Key]
+        //[Key]
         public int Id { get; set; }
         [Required]
         public string Firstname { get; set; } = string.Empty;
@@ -12,10 +13,8 @@ namespace API_Labb3.Models
         public int Age { get; set; }
         public int Phone { get; set; }
 
-        //Foreign key
-        //public int IntrestID { get; set; }
-
         //Navigation
+        [JsonIgnore]
         public ICollection<PersonInterest>? PersonInterests { get; set; }
 
     }

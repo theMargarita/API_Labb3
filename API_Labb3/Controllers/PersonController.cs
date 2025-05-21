@@ -35,25 +35,18 @@ namespace API_Labb3.Controllers
         }
 
 
-        //search by their id (dont forget the {id}, so controller understand which id which 
-        [HttpGet("{id}/interest", Name = "GetPersonById")]
-        public async Task<ActionResult<GetPersonInterestDTO>> GetPersonById(int id)
+        [HttpGet("{personId}/", Name = "GetPersonsInterestsByPeronId")]
+        public async Task<ActionResult<GetPersonInterestDTO>> GetPersonAndInterestsById(int personId)
         {
-            var person = await _context.Persons
-                .Include(p => p.PersonInterests)
-                .ThenInclude(pi => pi.Interests)
-                .Where(p => p.Id == id)
+            var person = await _context.PersonInterests
+                .Where(p => p.Persons.Id == personId)
                 .Select(p => new GetPersonInterestDTO
                 {
-                    FirstName = p.Firstname,
-                    LastName = p.Lastname,
-                    Interests = p.PersonInterests.Select(pi => new InterestDTO
-                    {
-                        Title = pi.Interests.Title,
-                        Description = pi.Interests.Description
-                    }).ToList()
-
-                }).FirstOrDefaultAsync();
+                    FirstName = p.Persons.Firstname,
+                    LastName = p.Persons.Lastname,
+                    Title = p.Interests.Title,
+                    Description = p.Interests.Description
+                }).ToListAsync();
 
             if (person == null)
             {
@@ -72,7 +65,7 @@ namespace API_Labb3.Controllers
             var person = await _context.Persons.FindAsync(personId);
             if(person == null)
             {
-                return NotFound(new { errorMessage = $"Person with id: {personId} not found" });
+                return NotFound(new { errorMessage = $"Person with personId: {personId} not found" });
             }
 
             //checks if person has this interest
@@ -82,7 +75,7 @@ namespace API_Labb3.Controllers
             if(personInterest == null)
             {
                 //maybe is just enough with personId variable
-                return NotFound(new { errorMessage = $"Interest is not found for person with id: {personInterest.PersonID}" });
+                return NotFound(new { errorMessage = $"Interest is not found for this person with personId: {personId}" });
             }
 
             var link = new Link

@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API_Labb3.Models
 {
     public class Link
     {
-        [Key]
+        //[Key]
         public int Id { get; set; }
 
         [Url]
@@ -14,6 +15,7 @@ namespace API_Labb3.Models
 
 
         //navigation properties
+        [JsonIgnore]
         public PersonInterest? PersonInterests { get; set; }
 
     }

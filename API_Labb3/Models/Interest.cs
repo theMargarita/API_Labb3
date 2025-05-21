@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API_Labb3.Models
 {
@@ -12,6 +13,7 @@ namespace API_Labb3.Models
         public string? Description { get; set; }
 
         //Navigation 
+        [JsonIgnore]
         public ICollection<PersonInterest>? PersonInterests { get; set; }
     }
 }
