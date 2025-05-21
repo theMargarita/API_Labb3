@@ -16,7 +16,7 @@ namespace API_Labb3.Models
 
 
         //Reference navigation property and for the other obove 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore]
 
         public ICollection<Link>? Links { get; set; }
 

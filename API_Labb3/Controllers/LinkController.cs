@@ -18,16 +18,17 @@ namespace API_Labb3.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}/person", Name = "GetAllLinksConnectedToAPerson")]
-        public async Task<ActionResult<GetPersonInterestDTO>> GetAllLinkConnectedToAPerson(int id)
+        [HttpGet("person", Name = "GetAllLinksConnectedToAPerson")]
+        public async Task<ActionResult<GetPersonInterestDTO>> GetAllLinkConnectedToAPerson(int personId)
         {
             var linkToPerson = await _context.PersonInterests
-                .Where(pi => pi.Id == id)
+                .Where(pi => pi.Id == personId)
                 .Select(pi => new GetPersonInterestDTO
                 {
                     FirstName = pi.Persons.Firstname,
                     LastName = pi.Persons.Lastname,
-                    URL = pi.Links.Select(l => new LinkDTO
+                    URL = pi.Links
+                    .Select(l => new LinkDTO
                     {
                         URL = l.URL
                     }).ToList()
@@ -39,22 +40,30 @@ namespace API_Labb3.Controllers
 
         }
 
-        //[HttpPost ( Name = "CreateNewLink")]
-        //public async Task<ActionResult<Link>> CreateLink(int id, Link createLink)
-        //{
-        //    if(createLink == null)
-        //    {
-        //        return BadRequest(new { errorMessage = "Data missing"});
-        //    }
+        /*Lägga till nya länkar för en specifik person och ett specifikt intresse*/
 
-        //    var linkToAdd = new Link()
-        //    {
-        //        URL = createLink.URL
-        //    };
-        //    await _context.AddAsync(linkToAdd);
-        //    //return CreatedAtAction(nameof(GetPersonAndInterestsById), new { id = personToAdd.Id }, personToAdd);
+        [HttpPost("/CreateNewLink")]
+        public async Task<ActionResult> CreateLink(int personId, int interestId, string createLink)
+        {
+            var personInterest = await _context.PersonInterests
+                .FirstOrDefaultAsync(p => p.PersonID == personId && p.InterestID == interestId);
 
-        //    return CreatedAtAction((nameof(GetAllLinkConnectedToAPerson)), new { id = linkToAdd.Id}, linkToAdd);
-        //}
+            if (personInterest is null)
+            {
+                return NotFound();
+            }
+
+            var linkToAdd = new Link()
+            {
+                URL = createLink,
+                PersonInterests = personInterest
+            };
+
+            await _context.AddAsync(linkToAdd);
+            await _context.SaveChangesAsync();
+
+            //return CreatedAtAction((nameof(GetAllLinkConnectedToAPerson)), new { personId = linkToAdd.Id }, linkToAdd);
+            return Ok(linkToAdd);
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace API_Labb3.Models
 
 
         //navigation properties
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore]
         public PersonInterest? PersonInterests { get; set; }
 
     }

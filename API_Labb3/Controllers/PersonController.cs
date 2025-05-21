@@ -83,7 +83,7 @@ namespace API_Labb3.Controllers
             if(personInterest == null)
             {
                 //maybe is just enough with personId variable
-                return NotFound(new { errorMessage = $"Interest is not found for this person with id: {personInterest.PersonID}" });
+                return NotFound(new { errorMessage = $"Interest is not found for this person with id: {personId}" });
             }
 
             var link = new Link
