@@ -35,7 +35,7 @@ namespace API_Labb3.Controllers
         }
 
 
-        [HttpGet("{personId}/", Name = "GetPersonAndInterestsById")]
+        [HttpGet("{personId}/", Name = "GetPersonsInterestsByPeronId")]
         public async Task<ActionResult<GetPersonInterestDTO>> GetPersonAndInterestsById(int personId)
         {
             var person = await _context.PersonInterests
