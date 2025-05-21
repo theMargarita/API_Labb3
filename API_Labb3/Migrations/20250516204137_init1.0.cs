@@ -7,7 +7,7 @@
 namespace API_Labb3.Migrations
 {
     /// <inheritdoc />
-    public partial class inint30 : Migration
+    public partial class init10 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -124,7 +124,12 @@ namespace API_Labb3.Migrations
                     { 2, 3, 1 },
                     { 3, 5, 1 },
                     { 4, 8, 2 },
-                    { 5, 7, 2 }
+                    { 5, 1, 2 },
+                    { 6, 3, 3 },
+                    { 7, 2, 4 },
+                    { 8, 4, 3 },
+                    { 9, 6, 5 },
+                    { 10, 7, 5 }
                 });
 
             migrationBuilder.InsertData(
@@ -136,7 +141,10 @@ namespace API_Labb3.Migrations
                     { 2, 4, "www.medium.com" },
                     { 3, 2, "www.youtube.com" },
                     { 4, 1, "www.trail.com" },
-                    { 5, 3, "www.chess.com" }
+                    { 5, 3, "www.chess.com" },
+                    { 6, 5, "www.spela.com" },
+                    { 7, 1, "www.blocket.com" },
+                    { 8, 3, "www.aftonbladet.se" }
                 });
 
             migrationBuilder.CreateIndex(
