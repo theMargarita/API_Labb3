@@ -18,43 +18,43 @@ namespace API_Labb3.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}/person", Name = "GetLinkById")]
-        public async Task<ActionResult<GetPersonInterestDTO>> GetLinkById(int id)
+        [HttpGet("{id}/person", Name = "GetAllLinksConnectedToAPerson")]
+        public async Task<ActionResult<GetPersonInterestDTO>> GetAllLinkConnectedToAPerson(int id)
         {
             var linkToPerson = await _context.PersonInterests
                 .Where(pi => pi.Id == id)
                 .Select(pi => new GetPersonInterestDTO
                 {
                     FirstName = pi.Persons.Firstname,
-                    LastName = pi.Persons.Firstname,
-                    LinkPerson = pi.Links.Select(l => new LinkDTO
+                    LastName = pi.Persons.Lastname,
+                    URL = pi.Links.Select(l => new LinkDTO
                     {
                         URL = l.URL
                     }).ToList()
 
-                }).FirstOrDefaultAsync();
+                }).ToListAsync();
 
 
             return Ok(linkToPerson);
 
         }
 
-        [HttpPost ( Name = "CreateNewLink")]
-        public async Task<ActionResult<Link>> CreateLink(int id, Link createLink)
-        {
-            if(createLink == null)
-            {
-                return BadRequest(new { errorMessage = "Data missing"});
-            }
+        //[HttpPost ( Name = "CreateNewLink")]
+        //public async Task<ActionResult<Link>> CreateLink(int id, Link createLink)
+        //{
+        //    if(createLink == null)
+        //    {
+        //        return BadRequest(new { errorMessage = "Data missing"});
+        //    }
 
-            var linkToAdd = new Link()
-            {
-                URL = createLink.URL
-            };
-            await _context.AddAsync(linkToAdd);
-            //return CreatedAtAction(nameof(GetPersonById), new { id = personToAdd.Id }, personToAdd);
+        //    var linkToAdd = new Link()
+        //    {
+        //        URL = createLink.URL
+        //    };
+        //    await _context.AddAsync(linkToAdd);
+        //    //return CreatedAtAction(nameof(GetPersonAndInterestsById), new { id = personToAdd.Id }, personToAdd);
 
-            return CreatedAtAction((nameof(GetLinkById)), new { id = linkToAdd.Id}, linkToAdd);
-        }
+        //    return CreatedAtAction((nameof(GetAllLinkConnectedToAPerson)), new { id = linkToAdd.Id}, linkToAdd);
+        //}
     }
 }

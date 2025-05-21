@@ -36,24 +36,25 @@ namespace API_Labb3.Controllers
 
 
         //search by their id (dont forget the {id}, so controller understand which id which 
-        [HttpGet("{id}/interest", Name = "GetPersonById")]
-        public async Task<ActionResult<GetPersonInterestDTO>> GetPersonById(int id)
+        [HttpGet("{id}/interest", Name = "GetPersonAndInterestsById")]
+        public async Task<ActionResult<GetPersonInterestDTO>> GetPersonAndInterestsById(int id)
         {
-            var person = await _context.Persons
-                .Include(p => p.PersonInterests)
-                .ThenInclude(pi => pi.Interests)
+            var person = await _context.PersonInterests
+                //.Include(p => p.PersonInterests)
+                //.Include(pi => pi.Interests)
                 .Where(p => p.Id == id)
                 .Select(p => new GetPersonInterestDTO
                 {
-                    FirstName = p.Firstname,
-                    LastName = p.Lastname,
-                    Interests = p.PersonInterests.Select(pi => new InterestDTO
-                    {
-                        Title = pi.Interests.Title,
-                        Description = pi.Interests.Description
-                    }).ToList()
+                    FirstName = p.Persons.Firstname,
+                    LastName = p.Persons.Lastname,
+                    Title = p.Interests.Title,
+                    Description = p.Interests.Description
+                    //URL = p.Links.Select(u => new LinkDTO
+                    //{
+                    //    URL = u.URL
+                    //}).ToList()
 
-                }).FirstOrDefaultAsync();
+                }).ToListAsync();
 
             if (person == null)
             {
@@ -82,7 +83,7 @@ namespace API_Labb3.Controllers
             if(personInterest == null)
             {
                 //maybe is just enough with personId variable
-                return NotFound(new { errorMessage = $"Interest is not found for person with id: {personInterest.PersonID}" });
+                return NotFound(new { errorMessage = $"Interest is not found for this person with id: {personInterest.PersonID}" });
             }
 
             var link = new Link
